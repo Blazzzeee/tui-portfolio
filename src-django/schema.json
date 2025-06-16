@@ -1,0 +1,15 @@
+{
+    "name": "home",
+    "nodeType": "directory",
+    {"entries": ["projects", "blog", "chat"]},
+    "metadata": {
+        "size": 1024,
+        "created": "2023-10-12T10:30:00Z",
+        "modified": "2025-06-15T20:00:00Z",
+        "permissions": "drwxr-xr-x",
+        "owner": "maanik"
+    },
+    "children" : [
+    { "$ref": "#"}
+    ]
+}

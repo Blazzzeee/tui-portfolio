@@ -3,18 +3,20 @@ from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+DEAFULT_OWNER:str = "root"
+
 class MetaData(BaseModel):
-    size:int
-    created:datetime
+    info:str
+    created:datetime = Field(default_factory=datetime.now)
     modified:datetime
     permission:str
-    owner:str
+    owner:str = DEAFULT_OWNER
 
 
 class DirNode(BaseModel):
     name: str
     nodeType: Literal["directory", "file"]
-    entries: List[str]
+    entries: List[str]=Field(default_factory=True)
     metaData:MetaData 
     children:Optional[List[DirNode]] = Field(default_factory=list)
         

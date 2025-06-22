@@ -16,7 +16,7 @@ class MetaData(BaseModel):
 class DirNode(BaseModel):
     name: str
     nodeType: Literal["directory", "file"]
-    entries: List[str]=Field(default_factory=True)
+    entries: List[str]=Field(default_factory=list)
     metaData:MetaData 
     children:Optional[List[DirNode]] = Field(default_factory=list)
         

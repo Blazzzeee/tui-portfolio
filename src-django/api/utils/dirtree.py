@@ -8,8 +8,8 @@ DEAFULT_OWNER:str = "root"
 class MetaData(BaseModel):
     info:str
     created:datetime = Field(default_factory=datetime.now)
-    modified:datetime
-    permission:str
+    modified:datetime = Field(default_factory=datetime.now)
+    permission:str = Field(default_factory=" ")
     owner:str = DEAFULT_OWNER
 
 
@@ -33,4 +33,7 @@ class DirNode(BaseModel):
             raise Exception("child does not exist in the parent node")
         else:
             parentNode.entries.remove(self.name)
-            parentNode.children = [child for child in parentNode.children if child.name != self.name]
+            parentNode.children[child for child in parentNode.children if child.name != self.name]
+
+def LevelOrderTraversal(root:DirNode):
+    pass

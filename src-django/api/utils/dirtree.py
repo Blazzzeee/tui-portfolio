@@ -9,7 +9,7 @@ class MetaData(BaseModel):
     info:str
     created:datetime = Field(default_factory=datetime.now)
     modified:datetime = Field(default_factory=datetime.now)
-    permission:str = Field(default_factory=" ")
+    permission:str
     owner:str = DEAFULT_OWNER
 
 
@@ -28,12 +28,15 @@ class DirNode(BaseModel):
             parentNode.entries.append(self.name)
             parentNode.children.append(self)
 
-    def deleteFromNode(self, parentNode:DirNode):
+    def deleteFromNode(self, parentNode: DirNode):
         if self.name not in parentNode.entries:
-            raise Exception("child does not exist in the parent node")
-        else:
-            parentNode.entries.remove(self.name)
-            parentNode.children[child for child in parentNode.children if child.name != self.name]
+            raise Exception("Child does not exist in the parent node")
+    
+        parentNode.entries.remove(self.name)
+        #Objects can have diffrent reference and same name
+        parentNode.children = [
+            child for child in parentNode.children if child.name != self.name
+        ]
 
 def LevelOrderTraversal(root:DirNode):
     pass

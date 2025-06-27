@@ -8,16 +8,16 @@ file_root=None
 GITHUB_USERNAME = "Blazzzeee"
 PROJECTS = ["testing"]
 SPARSE_PATHS = ["portfolio/"] 
-CLEANUP_ENABLED = False
+CLEANUP_ENABLED = True
 PROJECT_FILES = ["about.txt", "demo.gif", "journey.txt", "tech.txt"]
 
 def buildFileSystem():
     print(f"Starting file system hook")
-    global file_root 
     file_root = DirNode(name="home", nodeType="directory", metaData=MetaData(info="Root of the file system", modified=datetime.now(), permission=" "))
     buildBlogDir()
-    buildProjectsDir()
+    buildProjectsDir(file_root)
     buildRootDir()
+    return file_root
 
 
 def buildBlogDir():
@@ -30,7 +30,7 @@ def attachBlogs():
     #the user must build a blogs repo on Github , the script collects blogs resembling github commits and adds it to blog dir
     pass
 
-def buildProjectsDir():
+def buildProjectsDir(file_root):
     #use global repo list
     #the routine scrapes special dir in github that contains all projects/{projectname} info
     dirProjects = DirNode(name="projects", nodeType="directory", metaData=MetaData(info="Project Directory", modified=datetime.now(), created=datetime.now(), permission=" "))
@@ -47,9 +47,11 @@ def buildProjectsDir():
                             "--sparse",
                             repo_url,
                             project_path
-                            ], check=True)
+                            ], check=True, text=True)
+
+            subprocess.run(["git", "sparse-checkout", "init", "--cone"], cwd=project_path, check=True, text=True)
             #Set sparse path
-            subprocess.run(["git", "sparse-checkout", "set"]+ SPARSE_PATHS, cwd=project_path)
+            subprocess.run(["git", "sparse-checkout", "set"]+ SPARSE_PATHS, cwd=project_path, text=True)
             print(f"Spasre cloned {project} to {project_path}")
 
         except subprocess.CalledProcessError as e:
@@ -63,19 +65,25 @@ def buildProjectsDir():
         dir.attachToNode(dirProjects)
         print(f"Added {project} to filesystem")
 
-        for file_name in PROJECT_FILES:
+        for file_basename in PROJECT_FILES:
             try:
                 #Read data from file , Create Node , attach node to filesystem
-                with open(f"tmp/{project}/SPARSE_PATHS[0]/{file_name}", mode="r") as file:
-                    text = file.read(-1)
+                file_name=os.path.join("tmp", project, SPARSE_PATHS[0], file_basename)
+                if file_basename.endswith("gif"):
+                    text="gif file"
+                else:
+                    with open(file_name, mode="r", encoding="utf-8") as file:
+                        text = file.read()
                     #Create a node containing file content
-                    fileNode = DirNode(name=file_name, nodeType="file", metaData=MetaData(info= " "), children=None, entries=[text])
-                    #Attach node or file to its project node
-                    fileNode.attachToNode(dir)
-                    print(f"Added {file_name} to node {project}")
+                fileNode = DirNode(name=file_basename, nodeType="file",entries=[text], children=None ,metaData=MetaData(info= " ", permission="empty"))
+                #Attach node or file to its project node
+                fileNode.attachToNode(dir)
+                print(f"Added {file_basename} to node {project}")
 
             except FileNotFoundError as e:
-                print(f"Error: file {file_name} not present in {project} skipping ...")
+                print(f"Error: file {file_basename} not present in {project} skipping ...")
+            except Exception as e:
+                print(f"Unknown error has occurred {e}")
 
     if CLEANUP_ENABLED:
         print(f"Starting cleanup..")

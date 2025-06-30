@@ -1,0 +1,25 @@
+ commit: 8feccc3 
+ Author: Blazzee <maanik@tui.blog>
+ Tags: Version Control,Git 
+ Date: 2025-06-30 00:51:36.755317
+
+
+                                                    Version Control should be transparent
+
+The Problem, As I See It:
+
+"My fundamental belief is that source control has lost its way. Its purpose should be to serve the creator, but instead, it has become a master that the creator must serve. Your job is to program a computer... your brain should be occupied with how to write a good program, not occupied with things like should I merge or rebase. I argue that the very existence of such debates signifies a failure. The system should be so intuitive that it guides you to the correct process without you even thinking about it. Instead, Git forces you to facilitate it; that dynamic is completely backwards.
+
+My criticisms of Git are pointed and born from a deep frustration with its design philosophy. I see it as a system that constantly exposes its internal complexity to the user. I lament that programmers spend an inordinate amount of time 'babysitting their repository' and dealing with Git's quirks. I colorfully state, 'The fact that anyone even knows these things [like rebasing or merging] is a problem,' because it's time not spent on actual programming.
+
+Git's demand for immediate conflict resolution is a primary source of my ire. It interrupts the creative flow. If there's a conflict, Git blocks you. My view is that the system should never prevent you from saving your work. I criticize Git for presenting a false sense of security about its history. I say, 'Git sets you up with this idea that it has a real history and then it just lies to you,' referring to the ability to rewrite and alter commits, which I find dishonest for a system that should provide a reliable record. I point out that Git is a 'very code-oriented source control approach.' Its line-by-line diffing and merging model is fundamentally unsuited for artists and other creators who work with large binary assets, making it an incomplete solution for a full production team. I have a particularly strong dislike for commit hooks, which I often delete. I call the person who implements them 'the devil,' arguing that they are a clumsy attempt to 'paper over deeper problems' in an organization, like inadequate training or hiring. They treat a human problem with a rigid, annoying technical solution that gets in the way of the developer."
+
+My Solution: "Superposition"
+"My ideal is a system where, at the end of the day, you simply 'type done' and leave, confident that your work is saved, backed up, and versioned without any further intervention.
+
+To counter Git's rigidity, I developed the concept of 'superposition.' It's designed to handle versioning in a way that is more aligned with a natural, human workflow. The core idea is that when a conflict occurs—for example, two people have edited the same file—the system doesn't panic or halt. Instead, it simply acknowledges that there are now multiple valid versions of that file. It creates a 'superposition,' where the file now exists in several states simultaneously.
+
+In my words, the system tracks 'n number of superpositions for any particular file.' On your local machine, 'your version is the one that you see,' but you are always aware that another version—the superposition—exists alongside it. The genius of this approach, as I see it, lies in what happens next: nothing. You are not forced to do anything. The superposition can exist indefinitely. When you are ready—when it is convenient for you—you can resolve it. And resolution is simple: the system just gives you both files. There are no complex three-way merge tools. You look at both versions and manually integrate the changes, often with a simple copy-and-paste.
+
+This allows for what I call beneficial 'drift.' What might be a problem in a large, bureaucratic organization is a feature in a small, creative team. It allows for parallel, sometimes conflicting, work to proceed without forcing a premature and disruptive integration. For artists, this is critical; they can continue their work, and the conflicting assets can be sorted out later by the people best equipped to do so.
+In essence, the superposition concept is the ultimate expression of my philosophy: the source control system should adapt to the user's workflow, not the other way around. It preserves all work and empowers the user to resolve conflicts intelligently and at their own pace."

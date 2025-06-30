@@ -16,7 +16,7 @@ class MetaData(BaseModel):
 class DirNode(BaseModel):
     name: str
     nodeType: Literal["directory", "file"]
-    entries: List[str]=Field(default_factory=list)
+    content: List[str]=Field(default_factory=list)
     metaData:MetaData 
     children:Optional[List[DirNode]] = Field(default_factory=list)
         
@@ -24,15 +24,15 @@ class DirNode(BaseModel):
         if parentNode.nodeType!="directory":
             raise Exception("Cannot attach children to type file node")
 
-        if self.name not in parentNode.entries:
-            parentNode.entries.append(self.name)
+        if self.name not in parentNode.content:
+            parentNode.content.append(self.name)
             parentNode.children.append(self)
 
     def deleteFromNode(self, parentNode: DirNode):
-        if self.name not in parentNode.entries:
+        if self.name not in parentNode.content:
             raise Exception("Child does not exist in the parent node")
     
-        parentNode.entries.remove(self.name)
+        parentNode.content.remove(self.name)
         #Objects can have diffrent reference and same name
         parentNode.children = [
             child for child in parentNode.children if child.name != self.name
